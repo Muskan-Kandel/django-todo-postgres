@@ -1,0 +1,164 @@
+ {% extends "todo/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #FCF8F8;
+        color: #333;
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    /* Center TO-DO LIST title */
+    h1 {
+        text-align: center;
+        font-weight: 500;
+        color: #4a4e69;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        color: #4a4e69;
+        font-weight: 500;
+    }
+
+    /* Remove * (asterisk) from crispy form labels */
+    .asteriskField {
+        display: none;
+    }
+
+    /* Form container */
+    .submit_form {
+        padding: 24px;
+        background-color: #F9DFDF;
+        border-radius: 14px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+
+    /* Inputs */
+    .submit_form input,
+    .submit_form textarea {
+        border-radius: 8px;
+        border: 1px solid #e4bcbc;
+        background-color: #fff !important;
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+
+    .submit_form textarea {
+        height: 70px;
+        resize: none;
+    }
+
+    /* Task cards (smaller height) */
+    .card {
+        background-color: #ffffff;
+        color: #4a4e69;
+        margin-bottom: 16px;
+        border-radius: 12px;
+        padding: 14px 16px;   /* reduced padding */
+        border: 1px solid #f0d6d6;
+    }
+
+    .card b {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .card hr {
+        margin: 8px 0;
+    }
+
+    /* Buttons */
+    .btn {
+        background-color: #ffffff !important;
+        border: 1px solid #e4bcbc;
+        color: #4a4e69 !important;
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 0.9rem;
+    }
+
+    /* Prevent grey border on hover (delete button issue) */
+    .btn:hover {
+        background-color: #f2caca !important;
+        color: #333 !important;
+        border-color: #e4bcbc !important;
+        box-shadow: none;
+    }
+
+    hr {
+        border-top: 1px solid #e9cccc;
+    }
+
+    .alert {
+        background-color: #f9e5e5;
+        border: none;
+        color: #4a4e69;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<body  class="container-fluid">
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info">
+    <strong>{{message}}</strong>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="m-0"><i>{{user.username}}'s TO-DO LIST</i></h1>
+    <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+</div>
+<hr />
+
+  <div class="row">
+    <div class="col-md-3"> </div>
+        <div class="col-md-6" >
+            <div  class="submit_form">
+            <form  method="POST">
+            {% csrf_token %}
+            {{forms|crispy}}
+            <center>
+            <input type="submit" class="btn" value="Add Task" />
+            </center>
+            </form>
+            </div>
+        </div>
+    <div class="col-md-3"> </div>
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+    <hr/>
+    <h2><center><i>Your Tasks</i></center></h2>
+
+      {% for i in list %}
+      <div class="card">
+        <center><b>{{i.title}}</b></center>
+        <hr/>
+        {{i.date}}
+        <hr/>
+        {{i.details}}
+        <br />
+        <br />
+        <form action="/del/{{i.id}}" method="POST" style="  padding-right: 4%; padding-bottom: 3%;">
+          {% csrf_token %}
+          <button value="remove" type="submit"  class="btn" style="float: right;"><span class="glyphicon glyphicon-trash"></span> &nbsp; remove</button>
+        </form>
+      </div>
+      {% endfor%}
+    </div>
+    <div class="col-md-2"> </div>
+
+  </div>
+</body>
+{% endblock %}

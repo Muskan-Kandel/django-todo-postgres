@@ -1,0 +1,55 @@
+{% extends "todo/base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center" style="background-color:#FCF8F8" >
+    <div class="card p-4" style="max-width:400px; width:100%; border-radius:12px; background-color:#f2caca;">
+
+        <h4 class="text-center mb-4 fw-bold text-white">Sign In</h4>
+        {% if messages %}
+            <div class="text-center mb-3">
+                {% for message in messages %}
+                    <span class="small fw-bold {% if message.tags == 'error' %}text-danger{% else %}text-info{% endif %}">
+                        {{ message }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <input type="text" name="username" class="form-control" placeholder="Email or Username" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <small class="text-secondary">Must be 8-20 characters long</small>
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                    <label class="form-check-label text-white" for="remember">
+                        Remember me
+                    </label>
+                </div>
+
+                <a href="#" class="text-decoration-none text-white">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-light w-100 mb-3">Sign In</button>
+
+            <p class="text-center text-white">
+                Don’t have an account?
+                <a href="{% url 'register' %}" class="text-decoration-none text-light fw-bold">Sign Up</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

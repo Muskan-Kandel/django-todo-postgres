@@ -1,0 +1,69 @@
+{% extends "todo/base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center"style="background-color:#FCF8F8">
+        <div class="card p-4" style="max-width:400px; width:100%; border-radius:12px; background-color:#f2caca;">
+            <h4 class="text-center mb-4 fw-bold text-white">Create New Account</h4>
+
+
+            {% if messages %}
+                <div class="text-center mb-3">
+                    {% for message in messages %}
+                        <span class="small fw-bold {% if message.tags == 'error' %}text-danger{% else %}text-info{% endif %}">
+                            {{ message }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+            <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <small class="text-secondary">Must be 8–20 characters long</small>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                <small class="text-secondary">Must be 8–20 characters long</small>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="terms" name="terms">
+                <label class="form-check-label text-white" for="terms">
+                    I agree to terms and conditions
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-light w-100 mb-3">Create Account</button>
+
+            <p class="text-center text-white">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-decoration-none text-light fw-bold">Sign In</a>
+            </p>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
